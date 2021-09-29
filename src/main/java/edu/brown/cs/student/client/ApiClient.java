@@ -1,10 +1,10 @@
 package edu.brown.cs.student.client;
 
+import java.time.Duration;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 
 /**
  * This class encapsulates the client request handling logic. It is agnostic of what kinds of requests are being made.
@@ -17,7 +17,13 @@ public class ApiClient {
   public ApiClient() {
     // TODO build an HttpClient with version HTTP_2 and connection timeout of 60 seconds.
     // See https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html
-    this.client = null;
+
+    HttpClient.Builder clientBuilder = HttpClient.newBuilder();
+
+    clientBuilder.connectTimeout(Duration.ofSeconds(60, 0));
+    clientBuilder.version(HttpClient.Version.HTTP_2);
+
+    this.client = clientBuilder.build();
   }
 
   public void makeRequest(HttpRequest req) {
