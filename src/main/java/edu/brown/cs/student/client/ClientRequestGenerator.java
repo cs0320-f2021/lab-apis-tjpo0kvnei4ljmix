@@ -41,10 +41,18 @@ public class ClientRequestGenerator {
   public static HttpRequest getSecuredGetRequest() {
     String reqUri = "https://epb3u4xo11.execute-api.us-east-1.amazonaws.com/Prod/securedResource";
     // TODO get the secret API key by using the ClientAuth class.
-    String apiKey = null;
+    String apiKey = ClientAuth.getApiKey();
+
     // TODO build and return a new GET HttpRequest with an api key header.
+
+    HttpRequest.Builder getRequest = HttpRequest.newBuilder(URI.create(reqUri));
+
+    getRequest.GET();
+    getRequest.header("x-api-key", apiKey);
+
+    HttpRequest finishedRequest = getRequest.build();
     // Hint: .header("x-api-key", apiKey)
-    return null;
+    return finishedRequest;
   }
 
   /**
