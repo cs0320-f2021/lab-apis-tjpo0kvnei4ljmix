@@ -89,14 +89,29 @@ public class ClientRequestGenerator {
     // Our taName parameter can either be empty, or some name, in which case it takes the format "?taName=name".
     // If you tried this in the web browser URL you might see something like
     // https://epb3u4xo11.execute-api.us-east-1.amazonaws.com/Prod/securedResource?taName=theInputName
-    String taName = null;
+
+    String taName;
     // TODO set the taName. It should either be empty "" if the param is empty, or else of the format "?taName=param"
-    String reqUri =
-        "https://epb3u4xo11.execute-api.us-east-1.amazonaws.com/Prod/horoscopeResource/" + taName;
+    if (param.isEmpty()) {
+      System.out.println("No Name Provided");
+      taName = "";
+    } else {
+      System.out.println("Getting star sign for " + param);
+      taName = "?taName=" + param;
+    }
+
+    String reqUri = "https://epb3u4xo11.execute-api.us-east-1.amazonaws.com/Prod/horoscopeResource/" + taName;
     // TODO get the secret API key by using the ClientAuth class.
-    String apiKey = null;
-    System.out.println("Getting star sign for " + param);
+    String apiKey = ClientAuth.getApiKey();
+
     // TODO build and return a new GET request with the api key header.
-    return null;
+    HttpRequest.Builder getRequest = HttpRequest.newBuilder(URI.create(reqUri));
+
+    getRequest.header("x-api-key", apiKey);
+    getRequest.GET();
+
+    HttpRequest finishedRequest = getRequest.build();
+
+    return finishedRequest;
   }
 }
